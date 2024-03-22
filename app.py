@@ -9,11 +9,11 @@ tasks = []
 def create_task():
     data = request.get_json()
 
-    newTask = Task(title=data['title'],description=data.get('description',""))
-    tasks.append(newTask.to_dict())
+    newTask = Task(title=data['title'],description=data.get('description',"")).to_dict()
+    tasks.append(newTask)
     print(tasks)
     
-    return jsonify(f'Tarefa {data['title'].upper()} criada com sucesso')
+    return jsonify(newTask)
 
 @app.route('/get-tasks',methods=['GET'])
 def get_tasks():
@@ -24,13 +24,13 @@ def get_tasks():
         "total_tasks":total_tasks
     }
     
-@app.route('/get_task/<int:id>', methods=['GET'])
+@app.route('/get-task/<int:id>', methods=['GET'])
 def get_task_by_id(id):
     for task in tasks:
        if task['id'] == id: return task
     return jsonify({"Task não encontrada"}), 404
 
-@app.route('/update_task/<int:id>',methods=['PUT'])
+@app.route('/update-task/<int:id>',methods=['PUT'])
 def update_task(id):    
     data = request.get_json()
     for task in tasks:
@@ -38,10 +38,10 @@ def update_task(id):
             task['title'] = data['title']
             task['description'] = data['description']
             task['completed'] = data['completed']
-            return jsonify(f'A tarefa {id} foi atualizada com sucesso')
-        return jsonify(f'Tarefa não encontrada'), 404
+            return jsonify({"message":f'A tarefa {id} foi atualizada com sucesso'})
+        return jsonify({"message":'Tarefa não encontrada'}), 404
     
-@app.route('/task_delete/<int:id>',methods=['DELETE'])
+@app.route('/task-delete/<int:id>',methods=['DELETE'])
 def delete_task(id):
     for task in tasks:
         if task['id'] == id:

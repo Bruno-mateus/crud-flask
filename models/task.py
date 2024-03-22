@@ -12,5 +12,5 @@ class Task:
             "id":random.randint(1,1000),
             "title":self.title,
             "description":self.description,
-            "completed":self.description
+            "completed":self.completed
         }
